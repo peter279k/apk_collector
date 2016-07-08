@@ -152,7 +152,7 @@
 			echo "wake up !\n";
 		}
 		else {
-			echo "the apk file is existed.\n"
+			echo "the apk file is existed.\n";
 		}
 	}
 
