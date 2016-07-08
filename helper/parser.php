@@ -133,7 +133,8 @@
 						// present the progress bar
 						if($dl_total_size !=0) {
 							$number = round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2);
-							global $progress_bar -> update($number);
+							global $progress_bar;
+							$progress_bar -> update($number);
 							//echo "Progress: " . round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2) . "%\n";
 						}
 					}
