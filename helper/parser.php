@@ -129,10 +129,6 @@
 		}
 		
 		if(!file_exists($file_path) || !$is_exists) {
-			global $bar;
-			$bar = new CliProgressBar(100);
-			$bar->displayAlternateProgressBar();
-			$bar -> display();
 			
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			try {
@@ -166,13 +162,15 @@
 	//progress bar update
 	function progress_update($number) {
 		global $bar;
+		$bar = new CliProgressBar($number);
+		$bar->displayAlternateProgressBar();
+		$bar -> display();
 		
 		if((int)$number == 100) {
 			$bar -> end();
 		}
 		else {
 			$bar->progress();
-			sleep(2);
 		}
 	}
 
