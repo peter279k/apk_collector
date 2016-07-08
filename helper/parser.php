@@ -172,6 +172,7 @@
 		}
 		else {
 			$bar->progress();
+			sleep(2);
 		}
 	}
 
