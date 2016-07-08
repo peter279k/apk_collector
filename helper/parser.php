@@ -126,11 +126,15 @@
 		if(!file_exists($file_path) || !$is_exists) {
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			try {
+				$progress_bar = new \ProgressBar\Manager(0, 100);
+				
 				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $file_path, 'progress' => 
 					function ($dl_total_size, $dl_size_so_far, $ul_total_size, $ul_size_so_far) {
-						// do something.
+						// present the progress bar
 						if($dl_total_size !=0) {
-							echo "Progress: " . round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2) . "%\n";
+							$number = round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2);
+							global $progress_bar -> update($number);
+							//echo "Progress: " . round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2) . "%\n";
 						}
 					}
 				]);
