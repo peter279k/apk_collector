@@ -5,7 +5,8 @@
 	use Symfony\Component\DomCrawler\Crawler;
 	
 	//progress bar initialized.
-	$progress_bar = new \ProgressBar\Manager(0, 100);
+	use Dariuszp\CliProgressBar;
+	$bar = new CliProgressBar(100);
 	
 	/*
 		@request_url: apkmirror
@@ -128,6 +129,10 @@
 		}
 		
 		if(!file_exists($file_path) || !$is_exists) {
+			global $bar;
+			$bar->displayAlternateProgressBar();
+			$bar -> display();
+			
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			try {
 				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $file_path, 'progress' => 
@@ -135,7 +140,13 @@
 						// present the progress bar
 						if($dl_total_size !=0) {
 							$number = round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2);
-							progress_update($number);
+
+							if($number == 100) {
+								$bar -> end();
+							}
+							else {
+								$bar->progress();
+							}
 							//echo "Progress: " . round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2) . "%\n";
 						}
 					}
@@ -159,8 +170,6 @@
 	
 	//progress bar update
 	function progress_update($number) {
-		global $progress_bar;
-		$progress_bar -> update($number);
 	}
 
 ?>

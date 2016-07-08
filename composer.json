@@ -3,6 +3,6 @@
         "symfony/dom-crawler": "^3.1",
         "guzzlehttp/guzzle": "^6.2",
         "symfony/css-selector": "^3.1",
-		"guiguiboy/php-cli-progress-bar": "dev-master"
+		"dariuszp/cli-progress-bar": "*"
     }
 }
