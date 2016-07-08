@@ -2,7 +2,6 @@
     "require": {
         "symfony/dom-crawler": "^3.1",
         "guzzlehttp/guzzle": "^6.2",
-        "symfony/css-selector": "^3.1",
-		"dariuszp/cli-progress-bar": "*"
+        "symfony/css-selector": "^3.1"
     }
 }

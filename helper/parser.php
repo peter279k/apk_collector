@@ -4,12 +4,8 @@
 	use GuzzleHttp\Exception\RequestException;
 	use Symfony\Component\DomCrawler\Crawler;
 	
-	//progress bar initialized.
-	use Dariuszp\CliProgressBar;
-	$bar = null;
-	
 	/*
-		@request_url: apkmirror
+		@request_url: http://www.apkmirror.com/
 		@author: peter
 		@date: 2016/07/06
 		functions:
@@ -134,11 +130,10 @@
 			try {
 				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $file_path, 'progress' => 
 					function ($dl_total_size, $dl_size_so_far, $ul_total_size, $ul_size_so_far) {
-						// present the progress bar
+						// present the progress string
 						if($dl_total_size !=0) {
 							$number = round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2);
-							progress_update($number);
-							//echo "Progress: " . round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2) . "%\n";
+							echo "Progress: " . round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2) . "%\n";
 						}
 					}
 				]);
@@ -156,21 +151,6 @@
 		}
 		else {
 			echo "the apk file is existed.\n";
-		}
-	}
-	
-	//progress bar update
-	function progress_update($number) {
-		global $bar;
-		$bar = new CliProgressBar($number);
-		$bar->displayAlternateProgressBar();
-		$bar -> display();
-		
-		if((int)$number == 100) {
-			$bar -> end();
-		}
-		else {
-			$bar->progress();
 		}
 	}
 
