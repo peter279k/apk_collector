@@ -129,9 +129,6 @@
 		}
 		
 		if(!file_exists($file_path) || !$is_exists) {
-			global $bar;
-			$bar->displayAlternateProgressBar();
-			$bar -> display();
 			
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			try {
@@ -140,13 +137,7 @@
 						// present the progress bar
 						if($dl_total_size !=0) {
 							$number = round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2);
-
-							if($number == 100) {
-								$bar -> end();
-							}
-							else {
-								$bar->progress();
-							}
+							progress_update($number);
 							//echo "Progress: " . round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2) . "%\n";
 						}
 					}
@@ -170,6 +161,16 @@
 	
 	//progress bar update
 	function progress_update($number) {
+		global $bar;
+		$bar->displayAlternateProgressBar();
+		$bar -> display();
+			
+		if((int)$number == 100) {
+			$bar -> end();
+		}
+		else {
+			$bar->progress();
+		}
 	}
 
 ?>
