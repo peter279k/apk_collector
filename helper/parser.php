@@ -6,7 +6,7 @@
 	
 	//progress bar initialized.
 	use Dariuszp\CliProgressBar;
-	$bar = new CliProgressBar(100);
+	$bar = null;
 	
 	/*
 		@request_url: apkmirror
@@ -129,6 +129,10 @@
 		}
 		
 		if(!file_exists($file_path) || !$is_exists) {
+			global $bar;
+			$bar = new CliProgressBar(100);
+			$bar->displayAlternateProgressBar();
+			$bar -> display();
 			
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			try {
@@ -162,9 +166,7 @@
 	//progress bar update
 	function progress_update($number) {
 		global $bar;
-		$bar->displayAlternateProgressBar();
-		$bar -> display();
-			
+		
 		if((int)$number == 100) {
 			$bar -> end();
 		}
