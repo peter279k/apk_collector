@@ -138,7 +138,7 @@
 		if(!file_exists($file_path) || !$is_exists) {
 
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
-			$resource = fopen($file_path, 'w+');
+			$resource = fopen($file_path, 'w');
 			
 			try {
 				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $resource, 'progress' => 
