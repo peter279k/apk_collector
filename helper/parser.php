@@ -34,7 +34,7 @@
 		}
 
 		foreach ($links as $value) {
-			$client = new Client();
+			$client = new Client(["cookies" => true, "verify" => false]);
 			try {
 				$response = $client -> get($urls . $value);
 				get_apkmirror_apk($urls, $response -> getBody() -> getContents());
@@ -87,7 +87,7 @@
 				break;
 			}
 			
-			$client = new Client();
+			$client = new Client(["cookies" => true, "verify" => false]);
             $response = $client -> get($url . $link);
 			get_apkmirror_apk($url, $response -> getBody() -> getContents());
 	 	}
@@ -121,18 +121,23 @@
 		
 		$handle = fopen("./helper/files/apkmirror/file_lists.txt", "r");
 		
-		while(!feof($handle)) {
-			$str = fgets($handle, 4096);
-			if($str == $file_name) {
-				$is_exists = true;
-				fclose($handle);
-				break;
+		if(!$handle) {
+			echo "cannot find the file_lists.txt\n";
+		}
+		else {
+			while(!feof($handle)) {
+				$str = fgets($handle, 4096);
+				if($str == $file_name) {
+					$is_exists = true;
+					fclose($handle);
+					break;
+				}
 			}
 		}
 		
 		if(!file_exists($file_path) || !$is_exists) {
-			
-			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
+
+			$client = new Client(["cookies" => true, "verify" => false, 'headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			try {
 				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $file_path, 'progress' => 
 					function ($dl_total_size, $dl_size_so_far, $ul_total_size, $ul_size_so_far) {
