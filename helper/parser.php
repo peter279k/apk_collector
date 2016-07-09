@@ -153,7 +153,7 @@
 				file_put_contents("./helper/files/apkmirror/error_download_list.txt", $url . $link . "\r\n", FILE_APPEND);
 				echo "error download: " . $file_name . "\n";
 				echo "The Network error happened.\n";
-				$e -> getMessage() . "\n";
+				echo $e -> getMessage() . "\n";
 			}
 			
 			echo "sleep 5 seconds...\n";
