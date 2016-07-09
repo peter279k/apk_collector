@@ -115,7 +115,7 @@
 	function download_apkmirror_file($url, $link) {
 	
 		$file_name = apkmirror_file_name($url . $link);
-		echo $file_path = "./helper/files/apkmirror/" . $file_name . "\n";
+		$file_path = "./helper/files/apkmirror/" . $file_name;
 		
 		$is_exists = false;
 		
@@ -136,9 +136,11 @@
 		}
 		
 		if(!file_exists($file_path) || !$is_exists) {
-
+			echo "downloading the apk files...\n";
+			echo $file_name . "\n";
+			
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
-			$resource = fopen($file_path, 'w');
+			$resource = fopen($file_path, 'w+');
 			
 			try {
 				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $resource, 'progress' => 
