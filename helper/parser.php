@@ -4,6 +4,14 @@
 	use GuzzleHttp\Exception\RequestException;
 	use Symfony\Component\DomCrawler\Crawler;
 	
+	use Symfony\Component\Console\Output\ConsoleOutput;
+	use Symfony\Component\Console\Helper\ProgressBar;
+	
+	$output = new ConsoleOutput();
+	
+	$progress_bar = new ProgressBar($output, 100);
+	$progress_bar -> setOverwrite(true);
+	
 	/*
 		@request_url: http://www.apkmirror.com/
 		@author: peter
@@ -150,14 +158,18 @@
 			
 			try {
 				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $resource, 'progress' => 
-					function ($dl_total_size, $dl_size_so_far, $ul_total_size, $ul_size_so_far) {
+					function ($download_size, $downloaded_size, $upload_size, $uploaded_size) {
 						// present the progress string
-						if($dl_total_size !=0) {
-							$number = round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2);
-							echo "Progress: " . round(100 - (abs($dl_total_size - $dl_size_so_far - 100) / $dl_total_size * 100), 2) . "%\n";
+						if($download_size !=0) {
+							$number = round(100 - (abs($download_size - $downloaded_size - 100) / $download_size * 100), 2);
+							//echo "Progress: " . round(100 - (abs($download_size - $downloaded_size - 100) / $download_size * 100), 2) . "%\n";
+							global $progress_bar;
+							$progress_bar -> setProgress($number);
 						}
 					}
 				]);
+				
+				$progress_bar -> finish();
 			}
 			catch(Exception $e) {
 				file_put_contents("./helper/files/apkmirror/error_download_list.txt", $url . $link . "\r\n", FILE_APPEND);
