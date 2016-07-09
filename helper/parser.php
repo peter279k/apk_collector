@@ -135,7 +135,7 @@
 			}
 		}
 		
-		if(!file_exists($file_path) || !$is_exists) {
+		if(!file_exists($file_path) && !$is_exists) {
 			echo "downloading the apk files...\n";
 			echo $file_name . "\n";
 			
