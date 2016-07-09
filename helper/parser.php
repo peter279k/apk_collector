@@ -138,8 +138,10 @@
 		if(!file_exists($file_path) || !$is_exists) {
 
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
+			$resource = fopen($file_path, 'w+');
+			
 			try {
-				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $file_path, 'progress' => 
+				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $resource, 'progress' => 
 					function ($dl_total_size, $dl_size_so_far, $ul_total_size, $ul_size_so_far) {
 						// present the progress string
 						if($dl_total_size !=0) {
