@@ -35,8 +35,14 @@
 
 		foreach ($links as $value) {
 			$client = new Client();
-            $response = $client -> get($urls . $value);
-			get_apkmirror_apk($urls, $response -> getBody() -> getContents());
+			try {
+				$response = $client -> get($urls . $value);
+				get_apkmirror_apk($urls, $response -> getBody() -> getContents());
+			}
+			catch(Exception $e) {
+				echo $e -> getMessage() . "\n";
+				sleep(5);
+			}
 		}
 	}
 
