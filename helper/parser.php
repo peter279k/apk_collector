@@ -9,8 +9,7 @@
 	
 	$output = new ConsoleOutput();
 	
-	$progress_bar = new ProgressBar($output, 100);
-	$progress_bar -> setOverwrite(true);
+	$progress_bar = null;
 	
 	/*
 		@request_url: http://www.apkmirror.com/
@@ -154,6 +153,13 @@
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			$resource = fopen($file_path, 'w+');
 			
+			global $progress_bar;
+			global $output;
+			
+			$progress_bar = new ProgressBar($output, 100);
+			$progress_bar -> setOverwrite(true);
+			$progress_bar -> start();
+			
 			try {
 				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $resource, 'progress' => 
 					function ($download_size, $downloaded_size, $upload_size, $uploaded_size) {
@@ -162,12 +168,10 @@
 							$number = round(100 - (abs($download_size - $downloaded_size - 100) / $download_size * 100), 2);
 							//echo "Progress: " . round(100 - (abs($download_size - $downloaded_size - 100) / $download_size * 100), 2) . "%\n";
 							global $progress_bar;
-							$progress_bar -> setProgress($number);
+							$progress_bar -> setProgress((int)$number);
 						}
 					}
 				]);
-				
-				$progress_bar -> finish();
 			}
 			catch(Exception $e) {
 				file_put_contents("./helper/files/apkmirror/error_download_list.txt", $url . $link . "\r\n", FILE_APPEND);
@@ -180,11 +184,12 @@
 			echo "the apk file is existed.\n";
 		}
 		
+		$progress_bar -> finish();
 		sleep_rand();
 	}
 	
 	//sleep function
-	function sleep_rand($str) {
+	function sleep_rand() {
 		$sleep_number = rand(30, 60);
 		echo "sleep " . $sleep_number . " seconds...\n";
 		sleep($sleep_number);
