@@ -16,6 +16,9 @@
 			download_apkmirror_file($url, $link)
 	*/
 	
+	//seed the random number generator
+	srand();
+	
 	function parse_apkmirror_html($urls, $html_contents) {
 		$crawler = new Crawler($html_contents);
 		$link = $crawler -> filter('a[class="fontBlack"]');
@@ -41,7 +44,7 @@
 			}
 			catch(Exception $e) {
 				echo $e -> getMessage() . "\n";
-				sleep(5);
+				sleep_rand();
 			}
 		}
 	}
@@ -159,14 +162,20 @@
 				echo "The Network error happened.\n";
 				echo $e -> getMessage() . "\n";
 			}
-			
-			echo "sleep 5 seconds...\n";
-			sleep(5);
-			echo "wake up !\n";
 		}
 		else {
 			echo "the apk file is existed.\n";
 		}
+		
+		sleep_rand();
+	}
+	
+	//sleep function
+	function sleep_rand() {
+		$sleep_number = rand(30, 60);
+		echo "sleep " . $sleep_number . " seconds...\n";
+		sleep($sleep_number);
+		echo "wake up !\n";
 	}
 
 ?>
