@@ -7,7 +7,6 @@
 	use GuzzleHttp\Client;
 	use Psr\Http\Message\ResponseInterface;
 	use GuzzleHttp\Exception\RequestException;
-	use Symfony\Component\DomCrawler\Crawler;
 	
 	$page = 1;
 	$base_urls = array(
