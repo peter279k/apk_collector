@@ -115,7 +115,7 @@
 	function download_apkmirror_file($url, $link) {
 	
 		$file_name = apkmirror_file_name($url . $link);
-		$file_path = "./helper/files/apkmirror/" . $file_name;
+		echo $file_path = "./helper/files/apkmirror/" . $file_name . "\n";
 		
 		$is_exists = false;
 		
