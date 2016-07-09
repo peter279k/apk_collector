@@ -20,7 +20,7 @@
 	$contents = array();
 	$pages = 0;
 
-	$client = new Client(["cookies" => true, "verify" => false]);
+	$client = new Client();
 	
 	try {
 		

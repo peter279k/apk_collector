@@ -34,7 +34,7 @@
 		}
 
 		foreach ($links as $value) {
-			$client = new Client(["cookies" => true, "verify" => false]);
+			$client = new Client();
 			try {
 				$response = $client -> get($urls . $value);
 				get_apkmirror_apk($urls, $response -> getBody() -> getContents());
@@ -87,7 +87,7 @@
 				break;
 			}
 			
-			$client = new Client(["cookies" => true, "verify" => false]);
+			$client = new Client();
             $response = $client -> get($url . $link);
 			get_apkmirror_apk($url, $response -> getBody() -> getContents());
 	 	}
@@ -137,7 +137,7 @@
 		
 		if(!file_exists($file_path) || !$is_exists) {
 
-			$client = new Client(["cookies" => true, "verify" => false, 'headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
+			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			try {
 				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $file_path, 'progress' => 
 					function ($dl_total_size, $dl_size_so_far, $ul_total_size, $ul_size_so_far) {
