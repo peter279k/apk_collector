@@ -126,14 +126,12 @@
 	function download_apkmirror_file($url, $link) {
 	
 		$file_name = apkmirror_file_name($url . $link);
-		echo "find file name and sleep...";
-		sleep_rand();
 		
 		$file_path = "./helper/files/apkmirror/" . $file_name;
 		
 		$is_exists = false;
 		
-		$handle = fopen("./helper/files/apkmirror/file_lists.txt", "r");
+		$handle = @fopen("./helper/files/apkmirror/file_lists.txt", "r");
 		
 		if(!$handle) {
 			echo "cannot find the file_lists.txt\n";
@@ -186,7 +184,7 @@
 	}
 	
 	//sleep function
-	function sleep_rand() {
+	function sleep_rand($str) {
 		$sleep_number = rand(30, 60);
 		echo "sleep " . $sleep_number . " seconds...\n";
 		sleep($sleep_number);
