@@ -153,12 +153,7 @@
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			$resource = fopen($file_path, 'w+');
 			
-			global $progress_bar;
-			global $output;
-			
-			$progress_bar = new ProgressBar($output, 100);
-			$progress_bar -> setOverwrite(true);
-			$progress_bar -> start();
+			initial_bar();
 			
 			try {
 				$response = $client -> request('GET', $url . $link, ["verify" => false, "sink" => $resource, 'progress' => 
@@ -184,6 +179,7 @@
 			echo "the apk file is existed.\n";
 		}
 		
+		global $progress_bar;
 		$progress_bar -> finish();
 		sleep_rand();
 	}
@@ -195,5 +191,14 @@
 		sleep($sleep_number);
 		echo "wake up !\n";
 	}
-
+	
+	//initial progress bar
+	function initial_bar() {
+		global $progress_bar;
+		global $output;
+		
+		$progress_bar = new ProgressBar($output, 100);
+		$progress_bar -> setOverwrite(true);
+		$progress_bar -> start();
+	}
 ?>
