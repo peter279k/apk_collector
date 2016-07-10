@@ -40,7 +40,7 @@
 	*	Changing the page 1 to page 118.
 	*/
 	
-	for($page=1;$page<=$pages;$page++) {
+	for($page=118;$page<=$pages;$page++) {
 		$response = $client -> get($base_urls[0] . "/page/" . $page . "/");
 		parse_apkmirror_html($base_urls[0], $response -> getBody() -> getContents());
 		
