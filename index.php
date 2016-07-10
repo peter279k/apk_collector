@@ -37,10 +37,10 @@
 	/*
 	*	Firstly, run page 1
 	*	and some applications have downloaded successfully.
-	*	Changing the page 1 to page 118.
+	*	Changing the page 1 to page 120. (up to the situation.)
 	*/
 	
-	for($page=118;$page<=$pages;$page++) {
+	for($page=120;$page<=$pages;$page++) {
 		$response = $client -> get($base_urls[0] . "/page/" . $page . "/");
 		parse_apkmirror_html($base_urls[0], $response -> getBody() -> getContents());
 		
