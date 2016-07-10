@@ -190,7 +190,7 @@
 		$sleep_number = rand(30, 60);
 		echo "\nsleep " . $sleep_number . " seconds...\n";
 		sleep($sleep_number);
-		echo "wake up !\n";
+		echo "wake up !\n\n";
 	}
 	
 	//initial progress bar
