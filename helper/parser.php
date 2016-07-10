@@ -125,6 +125,7 @@
 	function download_apkmirror_file($url, $link) {
 	
 		$file_name = apkmirror_file_name($url . $link);
+		$file_name = trim($file_name);
 		
 		$file_path = "./helper/files/apkmirror/" . $file_name;
 		
@@ -138,6 +139,8 @@
 		else {
 			while(!feof($handle)) {
 				$str = fgets($handle, 4096);
+				$str = trim($str);
+				
 				if($str == $file_name) {
 					$is_exists = true;
 					fclose($handle);
