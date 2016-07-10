@@ -35,13 +35,18 @@
 	}
 	
 	/*
-	*	default: (page:1) and some app is download 
-	*	so change page 1 to page 116
+	*	Firstly, run page 1
+	*	and some applications have downloaded successfully.
+	*	Changing the page 1 to page 116.
 	*/
 	
-	for($page=116;$page<=$pages;$page++) {
+	for($page=1;$page<=$pages;$page++) {
 		$response = $client -> get($base_urls[0] . "/page/" . $page . "/");
 		parse_apkmirror_html($base_urls[0], $response -> getBody() -> getContents());
+		
+		if($page == 1) {
+			$page = 116;
+		}
 	}
 
 ?>
