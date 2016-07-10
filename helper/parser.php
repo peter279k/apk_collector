@@ -167,6 +167,9 @@
 						}
 					}
 				]);
+				
+				global $progress_bar;
+				$progress_bar -> finish();
 			}
 			catch(Exception $e) {
 				file_put_contents("./helper/files/apkmirror/error_download_list.txt", $url . $link . "\r\n", FILE_APPEND);
@@ -179,8 +182,6 @@
 			echo "the apk file is existed.\n";
 		}
 		
-		global $progress_bar;
-		$progress_bar -> finish();
 		sleep_rand();
 	}
 	
