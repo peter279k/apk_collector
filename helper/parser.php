@@ -65,9 +65,7 @@
 				global $output;
 				global $detect_os;
 				if($detect_os != "WINNT")
-					$output -> writeln(
-						'<error>' . $e -> getMessage() . '</error>'
-					);
+					$output -> writeln('<error>' . $e -> getMessage() . '</error>');
 				else
 					$output -> writeln($e -> getMessage());
 				sleep_rand();
@@ -102,9 +100,7 @@
 			global $output;
 			global $detect_os;
 			if($detect_os != "WINNT")
-				$output -> writeln(
-					'<error>' . $e -> getMessage() . '</error>'
-				);
+				$output -> writeln('<error>' . $e -> getMessage() . '</error>');
 			else
 				$output -> writeln($e -> getMessage());
 			
@@ -166,9 +162,7 @@
 		
 		if(!$handle) {
 			if($detect_os != "WINNT")
-				$output -> writeln(
-					'<error>' . $messages[0] . '</error>'
-				);
+				$output -> writeln('<error>' . $messages[0] . '</error>');
 			else
 				$output -> writeln($messages[0]);
 		}
@@ -188,13 +182,9 @@
 		if(!file_exists($file_path) && !$is_exists) {
 			
 			if($detect_os != "WINNT") {
-				$output -> writeln(
-					'<info>' . $messages[1] . '</info>'
-				);
+				$output -> writeln('<info>' . $messages[1] . '</info>');
 				
-				$output -> writeln(
-					'<info>' . $file_name . '</info>'
-				);
+				$output -> writeln('<info>' . $file_name . '</info>');
 			}
 			else {
 				$output -> writeln($messages[1]);
@@ -228,23 +218,14 @@
 				file_put_contents("./helper/files/apkmirror/error_download_list.txt", $url . $link . "\r\n", FILE_APPEND);
 				
 				if($detect_os != "WINNT") {
-					$output -> writeln(
-						'<error>' . "error download: " . $file_name . '</error>'
-						
-					);
+					$output -> writeln('<error>' . "error download: " . $file_name . '</error>');
 					
-					$output -> writeln(
-						'<error>' . $messages[2] . '</error>'
-					);
-					
-					$output -> writeln(
-						'<error>' . $e -> getMessage() . '</error>'
-					);
+					$output -> writeln('<error>' . $messages[2] . '</error>');
+
+					$output -> writeln('<error>' . $e -> getMessage() . '</error>');
 				}
 				else {
-					$output -> writeln(
-						"error download: " . $file_name
-					);
+					$output -> writeln("error download: " . $file_name);
 					
 					$output -> writeln($messages[2]);
 					
@@ -255,15 +236,176 @@
 		}
 		else {
 			if($detect_os != "WINNT")
-				$output -> writeln(
-					'<comment>' . $messages[3] . '</comment>'
-				);
+				$output -> writeln('<comment>' . $messages[3] . '</comment>');
 			else	
 				$output -> writeln($messages[3]);
 		}
 		
 		sleep_rand();
 	}
+	
+	/*
+		@request_url: http://www.androidapksfree.com/
+		@author: peter
+		@date: 2016/07/12
+		functions:
+			androidapks_free_html($urls, $html_contents)
+			androidapks_free_pages($html_contents)
+			androidapks_free_apk($html_contents)
+			download_androidapks_file($link)
+	*/
+	
+	function androidapks_free_html($urls, $html_contents) {
+		$crawler = new Crawler($html_contents);
+		$read_more_arr = $crawler -> filter('div[class="read-more"]');
+		
+		$download_pages = array();
+		$index = 0;
+		
+		foreach($read_more_arr as $key => $value) {
+			$crawler = new Crawler($value);
+			$download_pages[$index] = $crawler -> filter('a') -> attr('href');
+			$index++;
+		}
+		
+		foreach($download_pages as $value) {
+			$client = new Client();
+			$response = $client -> request("GET", $value);
+			androidapks_free_apk($response -> getBody() -> getContents());
+		}
+	}
+	
+	function androidapks_free_pages($html_contents) {
+		$crawler = new Crawler($html_contents);
+		$page_arr = $crawler -> filter('a.page-numbers');
+		
+		$max_page = 1;
+		foreach($page_arr as $key => $value) {
+			$crawler = new Crawler($value);
+			$page = $crawler -> filter('a') -> text();
+			
+			if($page > $max_page)
+				$max_page = $page;
+		}
+		
+		return $max_page;
+	}
+	
+	function androidapks_free_apk($html_contents) {
+		$crawler = new Crawler($html_contents);
+		$download_link_arr = $crawler -> filter('p');
+		
+		foreach($download_link_arr as $key => $value) {
+			$crawler = new Crawler($value);
+			$download_link = $crawler -> filter('a') -> text();
+			$download_link = str_replace("&gt;", "", $download_link);
+			$download_link = trim($download_link);
+			
+			if($download_link == "DownloadAPKfromsecureServer") {
+				$download_link = $crawler -> filter('a') -> attr('href');
+				download_androidapks_file($download_link);
+				break;
+			}
+		}
+	}
+	
+	function download_androidapks_file($link) {
+		$link_arr = explode("/", $link);
+		$file_name = $link_arr[count($link_arr)-1];
+		$file_path = "./helper/files/androidapksfree" . $file_name;
+		
+		$is_exists = false;
+		
+		$handle = @fopen("./helper/files/androidapksfree/file_lists.txt", "r");
+		
+		global $output;
+		global $detect_os;
+		global $messages;
+		
+		if(!$handle) {
+			if($detect_os != "WINNT")
+				$output -> writeln('<error>' . $messages[0] . '</error>');
+			else
+				$output -> writeln($messages[0]);
+		}
+		else {
+			while(!feof($handle)) {
+				$str = fgets($handle, 4096);
+				$str = trim($str);
+				
+				if($str == $file_name) {
+					$is_exists = true;
+					fclose($handle);
+					break;
+				}
+			}
+		}
+		
+		if(!file_exists($file_path) && !$is_exists) {
+			
+			if($detect_os != "WINNT") {
+				$output -> writeln('<info>' . $messages[1] . '</info>');
+				
+				$output -> writeln('<info>' . $file_name . '</info>');
+			}
+			else {
+				$output -> writeln($messages[1]);
+				
+				$output -> writeln($file_name);
+
+			}
+			
+			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
+			$resource = fopen($file_path, 'w+');
+			
+			initial_bar();
+			
+			try {
+				$response = $client -> request('GET', $link, ["verify" => false, "sink" => $resource, 'progress' => 
+					function ($download_size, $downloaded_size, $upload_size, $uploaded_size) {
+						// present the progress string
+						if($download_size !=0) {
+							$number = round(100 - (abs($download_size - $downloaded_size - 100) / $download_size * 100), 2);
+							global $progress_bar;
+							$progress_bar -> setProgress((int)$number);
+						}
+					}
+				]);
+				
+				global $progress_bar;
+				$progress_bar -> finish();
+			}
+			catch(Exception $e) {
+				file_put_contents("./helper/files/androidapksfree/error_download_list.txt", $link . "\r\n", FILE_APPEND);
+				
+				if($detect_os != "WINNT") {
+					$output -> writeln('<error>' . "error download: " . $file_name . '</error>');
+					
+					$output -> writeln('<error>' . $messages[2] . '</error>');
+					
+					$output -> writeln('<error>' . $e -> getMessage() . '</error>');
+				}
+				else {
+					$output -> writeln("error download: " . $file_name);
+					
+					$output -> writeln($messages[2]);
+
+					$output -> writeln($e -> getMessage());
+				}
+			}
+		}
+		else {
+			if($detect_os != "WINNT")
+				$output -> writeln('<comment>' . $messages[3] . '</comment>');
+			else	
+				$output -> writeln($messages[3]);
+		}
+		
+		sleep_rand();
+		
+	}
+	
+	
 	
 	//sleep function
 	function sleep_rand() {
@@ -273,18 +415,14 @@
 		$sleep_number = rand(10, 20);
 		
 		if($detect_os != "WINNT")
-			$output -> writeln(
-				'<info>' . "sleep " . $sleep_number . " seconds..." . '</info>'
-			);
+			$output -> writeln('<info>' . "sleep " . $sleep_number . " seconds..." . '</info>');
 		else
 			$output -> writeln("sleep " . $sleep_number . " seconds...");
 		
 		sleep($sleep_number);
 		
 		if($detect_os != "WINNT")
-			$output -> writeln(
-				'<info>' . $messages[4] . '</info>'
-			);
+			$output -> writeln('<info>' . $messages[4] . '</info>');
 		else
 			$output -> writeln($messages[4]);
 		

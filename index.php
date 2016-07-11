@@ -62,23 +62,30 @@
 				$response = $client -> get($url);
 				
 				if($response -> getStatuscode() == 200) {
+					$dir_path = "";
+					
 					switch($url) {
 						case $urls[0]:
 							$pages = get_apkmirror_pages($response -> getBody() -> getContents());
+							$dir_path = "./helper/files/apkmirror";
 							break;
 						case $urls[1]:
 							$pages = games_apk_pages($response -> getBody() -> getContents());
+							$dir_path = "./helper/files/gamesapk";
 							break;
 						case $urls[2]:
 							$pages = androidapps_game_pages($response -> getBody() -> getContents());
+							$dir_path = "./helper/files/androidappsgame";
 							break;
 						case $urls[3]:
 							$pages = androidapks_free_pages($response -> getBody() -> getContents());
+							$dir_path = "./helper/files/androidapksfree";
 							break;
 					}
+					
+					mkdir($dir_path);
 				}
 				else {
-					$output -> writeln("The code is not 200.");
 					die($output -> writeln($response -> getBody() -> getContents()));
 				}
 			}
@@ -90,11 +97,11 @@
 			*	apkmirror.com
 			*	Firstly, run page 1
 			*	and some applications have downloaded successfully.
-			*	Changing the page 1 to page 122. (up to the situation.)
+			*	e.g. Changing the page 1 to page 122. (up to the situation.)
 			*/
 			
-			$page = 0;
-			if(file_exists("./curr_page.txt")) {
+			$page = 1;
+			if(!file_exists("./curr_page.txt")) {
 				$page = file_get_contents("./curr_page.txt");
 			}
 			
@@ -108,9 +115,21 @@
 				catch(Exception $e) {
 					die($output -> writeln($e -> getMessage()));
 				}
-		
-				parse_apkmirror_html($url, $response -> getBody() -> getContents());
-		
+				
+				switch($url) {
+					case $urls[0]:
+						parse_apkmirror_html($url, $response -> getBody() -> getContents());
+						break;
+					case $urls[1]:
+						games_apk_html($url, $response -> getBody() -> getContents());
+						break;
+					case $urls[2]:
+						androidapps_game_html($url, $response -> getBody() -> getContents())
+						break;
+					case $urls[3]:
+						androidapks_free_html($url, $response -> getBody() -> getContents());
+						break;
+				}
 			}
 		}
 	}
