@@ -40,15 +40,20 @@
 	*	Changing the page 1 to page 120. (up to the situation.)
 	*/
 	
-	for($page=120;$page<=$pages;$page++) {
-		$response = $client -> get($base_urls[0] . "/page/" . $page . "/");
+	for($page=1;$page<=$pages;$page++) {
+		try {
+			$response = $client -> get($base_urls[0] . "/page/" . $page . "/");
+		}
+		catch(Exception $e) {
+			die($e -> getMessage());
+		}
+		
 		parse_apkmirror_html($base_urls[0], $response -> getBody() -> getContents());
 		
-		/*
 		if($page == 1) {
-			$page = 118;
+			$page = 122;
 		}
-		*/
+		
 	}
 
 ?>
