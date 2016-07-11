@@ -37,10 +37,13 @@
 	/*
 	*	Firstly, run page 1
 	*	and some applications have downloaded successfully.
-	*	Changing the page 1 to page 120. (up to the situation.)
+	*	Changing the page 1 to page 122. (up to the situation.)
 	*/
 	
 	for($page=1;$page<=$pages;$page++) {
+		//record the current page
+		file_put_contents("./curr_page.txt", $page);
+		
 		try {
 			$response = $client -> get($base_urls[0] . "/page/" . $page . "/");
 		}
