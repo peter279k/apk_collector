@@ -13,6 +13,16 @@
 	
 	$progress_bar = null;
 	
+	$detect_os = PHP_OS;
+	
+	$messages = array(
+		'cannot find the file_lists.txt',
+		'downloading the apk files...',
+		'The Network error happened.',
+		'the apk file is existed.',
+		'wake up !\n',
+	);
+	
 	/*
 		@request_url: http://www.apkmirror.com/
 		@author: peter
@@ -53,9 +63,13 @@
 			}
 			catch(Exception $e) {
 				global $output;
-				$output -> writeln(
-					'<error>' . $e -> getMessage() . '</error>'
-				);
+				global $detect_os;
+				if($detect_os != "WINNT")
+					$output -> writeln(
+						'<error>' . $e -> getMessage() . '</error>'
+					);
+				else
+					$output -> writeln($e -> getMessage());
 				sleep_rand();
 			}
 		}
@@ -86,9 +100,14 @@
 		}
 		catch(Exception $e) {
 			global $output;
-			$output -> writeln(
-				'<error>' . $e -> getMessage() . '</error>'
-			);
+			global $detect_os;
+			if($detect_os != "WINNT")
+				$output -> writeln(
+					'<error>' . $e -> getMessage() . '</error>'
+				);
+			else
+				$output -> writeln($e -> getMessage());
+			
 			file_put_contents("./helper/files/apkmirror/error_link_" . time() . ".txt", $html_contents, FILE_APPEND);
 			//abort downloading apk file.
 			return false;
@@ -142,10 +161,16 @@
 		$handle = @fopen("./helper/files/apkmirror/file_lists.txt", "r");
 		
 		global $output;
+		global $detect_os;
+		global $messages;
+		
 		if(!$handle) {
-			$output -> writeln(
-				'<error>' . 'cannot find the file_lists.txt' . '</error>'
-			);
+			if($detect_os != "WINNT")
+				$output -> writeln(
+					'<error>' . $messages[0] . '</error>'
+				);
+			else
+				$output -> writeln($messages[0]);
 		}
 		else {
 			while(!feof($handle)) {
@@ -161,13 +186,22 @@
 		}
 		
 		if(!file_exists($file_path) && !$is_exists) {
-			$output -> writeln(
-				'<info>' . 'downloading the apk files...' . '</info>'
-			);
 			
-			$output -> writeln(
-				'<info>' . $file_name . '</info>'
-			);
+			if($detect_os != "WINNT") {
+				$output -> writeln(
+					'<info>' . $messages[1] . '</info>'
+				);
+				
+				$output -> writeln(
+					'<info>' . $file_name . '</info>'
+				);
+			}
+			else {
+				$output -> writeln($messages[1]);
+				
+				$output -> writeln($file_name);
+
+			}
 			
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			$resource = fopen($file_path, 'w+');
@@ -193,24 +227,39 @@
 			catch(Exception $e) {
 				file_put_contents("./helper/files/apkmirror/error_download_list.txt", $url . $link . "\r\n", FILE_APPEND);
 				
-				$output -> writeln(
-					'<error>' . "error download: " . $file_name . '</error>'
-				);
-				
-				$output -> writeln(
-					'<error>' . "The Network error happened." . '</error>'
-				);
-				
-				$output -> writeln(
-					'<error>' . $e -> getMessage() . '</error>'
-				);
-				
+				if($detect_os != "WINNT") {
+					$output -> writeln(
+						'<error>' . "error download: " . $file_name . '</error>'
+						
+					);
+					
+					$output -> writeln(
+						'<error>' . $messages[2] . '</error>'
+					);
+					
+					$output -> writeln(
+						'<error>' . $e -> getMessage() . '</error>'
+					);
+				}
+				else {
+					$output -> writeln(
+						"error download: " . $file_name
+					);
+					
+					$output -> writeln($messages[2]);
+					
+					
+					$output -> writeln($e -> getMessage());
+				}
 			}
 		}
 		else {
-			$output -> writeln(
-				'<comment>' . "the apk file is existed." . '</comment>'
-			);
+			if($detect_os != "WINNT")
+				$output -> writeln(
+					'<comment>' . $messages[3] . '</comment>'
+				);
+			else	
+				$output -> writeln($messages[3]);
 		}
 		
 		sleep_rand();
@@ -219,14 +268,27 @@
 	//sleep function
 	function sleep_rand() {
 		global $output;
+		global $detect_os;
+		
 		$sleep_number = rand(10, 20);
-		$output -> writeln(
-			'<info>' . "sleep " . $sleep_number . " seconds..." . '</info>'
-		);
+		
+		if($detect_os != "WINNT")
+			$output -> writeln(
+				'<info>' . "sleep " . $sleep_number . " seconds..." . '</info>'
+			);
+		else
+			$output -> writeln("sleep " . $sleep_number . " seconds...");
+		
 		sleep($sleep_number);
-		$output -> writeln(
-			'<info>' . "wake up !\n" . '</info>'
-		);
+		
+		if($detect_os != "WINNT")
+			$output -> writeln(
+				'<info>' . $messages[4] . '</info>'
+			);
+		else
+			$output -> writeln($messages[4]);
+		
+		echo "\n";
 	}
 	
 	//initial progress bar
