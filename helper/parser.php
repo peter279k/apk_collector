@@ -288,7 +288,7 @@
 		else
 			$output -> writeln($messages[4]);
 		
-		echo "\n";
+		$output -> writeln('');
 	}
 	
 	//initial progress bar
