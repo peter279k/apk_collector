@@ -115,7 +115,7 @@
 		
 	 	if ($link == "#downloads") {
 	 		//finding correct download link
-			//e.g. /apk/facebook-2/facebook/facebook-85-0-0-5-70-release/facebook-85-0-0-5-70-android-apk-download/
+			//e.g.(apkmirror) /apk/facebook-2/facebook/facebook-85-0-0-5-70-release/facebook-85-0-0-5-70-android-apk-download/
 			$find_download = $crawler -> filter('div[class="table-cell rowheight addseparator expand pad dowrap"]');
 			
 			foreach($find_download as $key => $value) {
