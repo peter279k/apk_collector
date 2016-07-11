@@ -54,7 +54,7 @@
 			catch(Exception $e) {
 				global $output;
 				$output -> writeln(
-					'<bg=red;fg=white;option=bold>' . $e -> getMessage() . '</>'
+					'<error>' . $e -> getMessage() . '</error>'
 				);
 				sleep_rand();
 			}
@@ -87,7 +87,7 @@
 		catch(Exception $e) {
 			global $output;
 			$output -> writeln(
-				'<bg=red;fg=white;option=bold>' . $e -> getMessage() . '</>'
+				'<error>' . $e -> getMessage() . '</error>'
 			);
 			file_put_contents("./helper/files/apkmirror/error_link_" . time() . ".txt", $html_contents, FILE_APPEND);
 			//abort downloading apk file.
@@ -144,7 +144,7 @@
 		global $output;
 		if(!$handle) {
 			$output -> writeln(
-				'<bg=default;fg=white>' . 'cannot find the file_lists.txt' . '</>'
+				'<error>' . 'cannot find the file_lists.txt' . '</error>'
 			);
 		}
 		else {
@@ -162,11 +162,11 @@
 		
 		if(!file_exists($file_path) && !$is_exists) {
 			$output -> writeln(
-				'<bg=default;fg=white>' . 'downloading the apk files...' . '</>'
+				'<info>' . 'downloading the apk files...' . '</info>'
 			);
 			
 			$output -> writeln(
-				'<bg=default;fg=white>' . $file_name . '</>'
+				'<info>' . $file_name . '</info>'
 			);
 			
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
@@ -194,26 +194,22 @@
 				file_put_contents("./helper/files/apkmirror/error_download_list.txt", $url . $link . "\r\n", FILE_APPEND);
 				
 				$output -> writeln(
-					'<bg=red;fg=white>' . "error download: " . $file_name . '</>'
+					'<error>' . "error download: " . $file_name . '</error>'
 				);
 				
 				$output -> writeln(
-					'<bg=red;fg=white>' . "The Network error happened." . '</>'
+					'<error>' . "The Network error happened." . '</error>'
 				);
 				
 				$output -> writeln(
-					'<bg=red;fg=white>' . "The Network error happened." . '</>'
-				);
-				
-				$output -> writeln(
-					'<bg=red;fg=white>' . $e -> getMessage() . '</>'
+					'<error>' . $e -> getMessage() . '</error>'
 				);
 				
 			}
 		}
 		else {
 			$output -> writeln(
-				'<bg=default;fg=green>' . "the apk file is existed." . '</>'
+				'<comment>' . "the apk file is existed." . '</comment>'
 			);
 		}
 		
@@ -225,11 +221,11 @@
 		global $output;
 		$sleep_number = rand(10, 20);
 		$output -> writeln(
-			'<bg=default;fg=cyan>' . "sleep " . $sleep_number . " seconds..." . '</>'
+			'<info>' . "sleep " . $sleep_number . " seconds..." . '</info>'
 		);
 		sleep($sleep_number);
 		$output -> writeln(
-			'<bg=default;fg=cyan>' . "wake up !\n" . '</>'
+			'<info>' . "wake up !\n" . '</info>'
 		);
 	}
 	
