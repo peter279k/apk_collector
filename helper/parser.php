@@ -5,6 +5,7 @@
 	use Symfony\Component\DomCrawler\Crawler;
 	
 	use Symfony\Component\Console\Output\ConsoleOutput;
+	use Symfony\Component\Console\Formatter\OutputFormatter;
 	use Symfony\Component\Console\Helper\ProgressBar;
 	
 	$output = new ConsoleOutput();
@@ -51,6 +52,7 @@
 				get_apkmirror_apk($urls, $response -> getBody() -> getContents());
 			}
 			catch(Exception $e) {
+				global $output;
 				$output -> writeln(
 					'<bg=red;fg=white;option=bold>' . $e -> getMessage() . '</>'
 				);
@@ -83,6 +85,7 @@
 			$link = $download_direct -> attr('href');
 		}
 		catch(Exception $e) {
+			global $output;
 			$output -> writeln(
 				'<bg=red;fg=white;option=bold>' . $e -> getMessage() . '</>'
 			);
@@ -138,6 +141,7 @@
 		
 		$handle = @fopen("./helper/files/apkmirror/file_lists.txt", "r");
 		
+		global $output;
 		if(!$handle) {
 			$output -> writeln(
 				'<bg=default;fg=white>' . 'cannot find the file_lists.txt' . '</>'
@@ -218,6 +222,7 @@
 	
 	//sleep function
 	function sleep_rand() {
+		global $output;
 		$sleep_number = rand(10, 20);
 		$output -> writeln(
 			'<bg=default;fg=cyan>' . "sleep " . $sleep_number . " seconds..." . '</>'
