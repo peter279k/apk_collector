@@ -190,7 +190,7 @@
 	
 	//sleep function
 	function sleep_rand() {
-		$sleep_number = rand(20, 30);
+		$sleep_number = rand(10, 20);
 		echo "\nsleep " . $sleep_number . " seconds...\n";
 		sleep($sleep_number);
 		echo "wake up !\n\n";
