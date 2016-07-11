@@ -8,6 +8,7 @@
 	use Symfony\Component\Console\Helper\ProgressBar;
 	
 	$output = new ConsoleOutput();
+	$output -> setFormatter(new OutputFormatter(true));
 	
 	$progress_bar = null;
 	
@@ -50,7 +51,9 @@
 				get_apkmirror_apk($urls, $response -> getBody() -> getContents());
 			}
 			catch(Exception $e) {
-				echo $e -> getMessage() . "\n";
+				$output -> writeln(
+					'<bg=red;fg=white;option=bold>' . $e -> getMessage() . '</>'
+				);
 				sleep_rand();
 			}
 		}
@@ -80,7 +83,9 @@
 			$link = $download_direct -> attr('href');
 		}
 		catch(Exception $e) {
-			echo $e -> getMessage() . "\n";
+			$output -> writeln(
+				'<bg=red;fg=white;option=bold>' . $e -> getMessage() . '</>'
+			);
 			file_put_contents("./helper/files/apkmirror/error_link_" . time() . ".txt", $html_contents, FILE_APPEND);
 			//abort downloading apk file.
 			return false;
@@ -134,7 +139,9 @@
 		$handle = @fopen("./helper/files/apkmirror/file_lists.txt", "r");
 		
 		if(!$handle) {
-			echo "cannot find the file_lists.txt\n";
+			$output -> writeln(
+				'<bg=default;fg=white>' . 'cannot find the file_lists.txt' . '</>'
+			);
 		}
 		else {
 			while(!feof($handle)) {
@@ -150,8 +157,13 @@
 		}
 		
 		if(!file_exists($file_path) && !$is_exists) {
-			echo "downloading the apk files...\n";
-			echo $file_name . "\n";
+			$output -> writeln(
+				'<bg=default;fg=white>' . 'downloading the apk files...' . '</>'
+			);
+			
+			$output -> writeln(
+				'<bg=default;fg=white>' . $file_name . '</>'
+			);
 			
 			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			$resource = fopen($file_path, 'w+');
@@ -176,13 +188,29 @@
 			}
 			catch(Exception $e) {
 				file_put_contents("./helper/files/apkmirror/error_download_list.txt", $url . $link . "\r\n", FILE_APPEND);
-				echo "error download: " . $file_name . "\n";
-				echo "The Network error happened.\n";
-				echo $e -> getMessage() . "\n";
+				
+				$output -> writeln(
+					'<bg=red;fg=white>' . "error download: " . $file_name . '</>'
+				);
+				
+				$output -> writeln(
+					'<bg=red;fg=white>' . "The Network error happened." . '</>'
+				);
+				
+				$output -> writeln(
+					'<bg=red;fg=white>' . "The Network error happened." . '</>'
+				);
+				
+				$output -> writeln(
+					'<bg=red;fg=white>' . $e -> getMessage() . '</>'
+				);
+				
 			}
 		}
 		else {
-			echo "the apk file is existed.\n";
+			$output -> writeln(
+				'<bg=default;fg=green>' . "the apk file is existed." . '</>'
+			);
 		}
 		
 		sleep_rand();
@@ -191,9 +219,13 @@
 	//sleep function
 	function sleep_rand() {
 		$sleep_number = rand(10, 20);
-		echo "\nsleep " . $sleep_number . " seconds...\n";
+		$output -> writeln(
+			'<bg=default;fg=cyan>' . "sleep " . $sleep_number . " seconds..." . '</>'
+		);
 		sleep($sleep_number);
-		echo "wake up !\n\n";
+		$output -> writeln(
+			'<bg=default;fg=cyan>' . "wake up !\n" . '</>'
+		);
 	}
 	
 	//initial progress bar
