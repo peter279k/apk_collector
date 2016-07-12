@@ -20,7 +20,7 @@
 		'downloading the apk files...',
 		'The Network error happened.',
 		'the apk file is existed.',
-		'wake up !\n',
+		'wake up !',
 	);
 	
 	/*
@@ -246,6 +246,7 @@
 				$output -> writeln($messages[3]);
 		}
 		
+		$output -> writeln('');
 		sleep_rand();
 	}
 	
@@ -409,6 +410,7 @@
 				$output -> writeln($messages[3]);
 		}
 		
+		$output -> writeln('');
 		sleep_rand();
 		
 	}
@@ -419,6 +421,7 @@
 	function sleep_rand() {
 		global $output;
 		global $detect_os;
+		global $messages;
 		
 		$sleep_number = rand(10, 20);
 		
@@ -435,12 +438,14 @@
 			$output -> writeln($messages[4]);
 		
 		$output -> writeln('');
+		$output -> writeln('');
 	}
 	
 	//initial progress bar
 	function initial_bar() {
 		global $progress_bar;
 		global $output;
+		$output -> writeln('');
 		
 		$progress_bar = new ProgressBar($output, 100);
 		$progress_bar -> setOverwrite(true);
