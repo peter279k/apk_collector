@@ -47,7 +47,7 @@
 				
 				$output -> writeln('You selected: ' . $url);
 				
-				$this -> request_initial($url);
+				echo $this -> request_initial($url);
 			}
 		}
 		
@@ -83,7 +83,7 @@
 							break;
 					}
 					
-					mkdir($dir_path);
+					@mkdir($dir_path);
 				}
 				else {
 					die($output -> writeln($response -> getBody() -> getContents()));
@@ -94,7 +94,6 @@
 			}
 	
 			/*
-			*	apkmirror.com
 			*	Firstly, run page 1
 			*	and some applications have downloaded successfully.
 			*	e.g. Changing the page 1 to page 122. (up to the situation.)
@@ -108,7 +107,6 @@
 			for(;$page<=$pages;$page++) {
 				//record the current page
 				file_put_contents("./curr_page.txt", $page);
-		
 				try {
 					$response = $client -> get($url . "/page/" . $page . "/");
 				}
@@ -124,7 +122,7 @@
 						games_apk_html($url, $response -> getBody() -> getContents());
 						break;
 					case $urls[2]:
-						androidapps_game_html($url, $response -> getBody() -> getContents())
+						androidapps_game_html($url, $response -> getBody() -> getContents());
 						break;
 					case $urls[3]:
 						androidapks_free_html($url, $response -> getBody() -> getContents());

@@ -154,7 +154,8 @@
 		
 		$is_exists = false;
 		
-		$handle = @fopen("./helper/files/apkmirror/file_lists.txt", "r");
+		$file_lists_path = "./helper/files/apkmirror/file_lists.txt";
+		$handle = @fopen($file_lists_path, "r");
 		
 		global $output;
 		global $detect_os;
@@ -213,11 +214,15 @@
 				
 				global $progress_bar;
 				$progress_bar -> finish();
+				file_put_contents($file_lists_path, $file_name . "\r\n", FILE_APPEND);
 			}
 			catch(Exception $e) {
 				file_put_contents("./helper/files/apkmirror/error_download_list.txt", $url . $link . "\r\n", FILE_APPEND);
 				
 				if($detect_os != "WINNT") {
+					
+					$output -> writeln('');
+					
 					$output -> writeln('<error>' . "error download: " . $file_name . '</error>');
 					
 					$output -> writeln('<error>' . $messages[2] . '</error>');
@@ -257,7 +262,7 @@
 	
 	function androidapks_free_html($urls, $html_contents) {
 		$crawler = new Crawler($html_contents);
-		$read_more_arr = $crawler -> filter('div[class="read-more"]');
+		$read_more_arr = $crawler -> filter('div.read-more');
 		
 		$download_pages = array();
 		$index = 0;
@@ -277,7 +282,7 @@
 	
 	function androidapks_free_pages($html_contents) {
 		$crawler = new Crawler($html_contents);
-		$page_arr = $crawler -> filter('a.page-numbers');
+		$page_arr = $crawler -> filter('a[class="page-numbers"]');
 		
 		$max_page = 1;
 		foreach($page_arr as $key => $value) {
@@ -293,30 +298,29 @@
 	
 	function androidapks_free_apk($html_contents) {
 		$crawler = new Crawler($html_contents);
-		$download_link_arr = $crawler -> filter('p');
+		$download_link_arr = $crawler -> filter('a');
 		
 		foreach($download_link_arr as $key => $value) {
 			$crawler = new Crawler($value);
-			$download_link = $crawler -> filter('a') -> text();
-			$download_link = str_replace("&gt;", "", $download_link);
-			$download_link = trim($download_link);
+
+			$download_link = $crawler -> filter('a') -> attr('href') . "\n";
 			
-			if($download_link == "DownloadAPKfromsecureServer") {
-				$download_link = $crawler -> filter('a') -> attr('href');
+			if(strpos($download_link, ".apk")) {
 				download_androidapks_file($download_link);
-				break;
 			}
 		}
 	}
 	
 	function download_androidapks_file($link) {
+		$link = trim($link);
 		$link_arr = explode("/", $link);
 		$file_name = $link_arr[count($link_arr)-1];
-		$file_path = "./helper/files/androidapksfree" . $file_name;
+		$file_name = trim($file_name);
+		$file_path = "./helper/files/androidapksfree/" . $file_name;
 		
 		$is_exists = false;
-		
-		$handle = @fopen("./helper/files/androidapksfree/file_lists.txt", "r");
+		$file_lists_path = "./helper/files/androidapksfree/file_lists.txt";
+		$handle = @fopen($file_lists_path, "r");
 		
 		global $output;
 		global $detect_os;
@@ -355,7 +359,7 @@
 
 			}
 			
-			$client = new Client(['headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
+			$client = new Client(["cookies" => true, 'headers' => ['Keep-Alive' => '1000', 'Connection' => 'keep-alive']]);
 			$resource = fopen($file_path, 'w+');
 			
 			initial_bar();
@@ -374,11 +378,15 @@
 				
 				global $progress_bar;
 				$progress_bar -> finish();
+				file_put_contents($file_lists_path, $file_name . "\r\n", FILE_APPEND);
 			}
 			catch(Exception $e) {
 				file_put_contents("./helper/files/androidapksfree/error_download_list.txt", $link . "\r\n", FILE_APPEND);
 				
 				if($detect_os != "WINNT") {
+					
+					$output -> writeln('');
+					
 					$output -> writeln('<error>' . "error download: " . $file_name . '</error>');
 					
 					$output -> writeln('<error>' . $messages[2] . '</error>');
