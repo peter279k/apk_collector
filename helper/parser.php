@@ -69,6 +69,7 @@
 				else
 					$output -> writeln($e -> getMessage());
 				sleep_rand();
+				die();
 			}
 		}
 	}
@@ -106,7 +107,7 @@
 			
 			file_put_contents("./helper/files/apkmirror/error_link_" . time() . ".txt", $html_contents, FILE_APPEND);
 			//abort downloading apk file.
-			return false;
+			die();
 		}
 		
 	 	if ($link == "#downloads") {
@@ -237,6 +238,8 @@
 					
 					$output -> writeln($e -> getMessage());
 				}
+				
+				die();
 			}
 		}
 		else {
@@ -401,6 +404,8 @@
 
 					$output -> writeln($e -> getMessage());
 				}
+				
+				die();
 			}
 		}
 		else {
