@@ -102,6 +102,7 @@
 			$page = 1;
 			if(file_exists("./curr_page.txt")) {
 				$curr_page = file_get_contents("./curr_page.txt");
+				$page = $curr_page;
 			}
 			
 			for(;$page<=$pages;$page++) {
@@ -128,9 +129,6 @@
 						androidapks_free_html($url, $response -> getBody() -> getContents());
 						break;
 				}
-				
-				if($page == 1)
-					$page = $curr_page;
 			}
 		}
 	}
