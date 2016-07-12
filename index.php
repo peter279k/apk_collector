@@ -47,11 +47,11 @@
 				
 				$output -> writeln('You selected: ' . $url);
 				
-				echo $this -> request_initial($url);
+				echo $this -> request_initial($url, $output);
 			}
 		}
 		
-		private function request_initial($url) {
+		private function request_initial($url, $output) {
 			$urls = $this -> urls;
 			$pages = 0;
 
