@@ -38,7 +38,7 @@
 			
 			if($action == "apk" || $action == "") {
 				$helper = $this -> getHelper('question');
-				$question = new ChoiceQuestion('Please select the url that you want to download (defaults to http://www.apkmirror.com)',
+				$question = new ChoiceQuestion('Please select the url that you want to download (the default url is http://www.apkmirror.com)',
 					$this -> urls, 0);
 				
 				$question -> setErrorMessage('The apk url %s is invalid.');
