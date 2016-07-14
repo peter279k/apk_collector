@@ -19,8 +19,7 @@
 	
 	class download_command extends Command {
 		private $urls = array(
-			'http://www.apkmirror.com', 'https://gamesapk.net',
-			'http://www.androidappsgame.com/', 'http://www.androidapksfree.com/'
+			'http://www.apkmirror.com', 'http://www.androidapksfree.com/'
 		);
 		
 		protected function configure() {
