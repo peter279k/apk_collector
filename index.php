@@ -72,6 +72,9 @@
 							$pages = androidapks_free_pages($response -> getBody() -> getContents());
 							$dir_path = "./helper/files/androidapksfree";
 							break;
+						case $urls[2]:
+							//fix_download($dir_path);
+							break;
 					}
 					
 					@mkdir($dir_path);
