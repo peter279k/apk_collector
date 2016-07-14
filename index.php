@@ -46,7 +46,12 @@
 				
 				$output -> writeln('You selected: ' . $url);
 				
-				echo $this -> request_initial($url, $output);
+				if($url != "fixing error when downloading apk")
+					echo $this -> request_initial($url, $output);
+				/*
+				else
+					fix_download_apk();
+				*/
 			}
 		}
 		
@@ -71,9 +76,6 @@
 						case $urls[1]:
 							$pages = androidapks_free_pages($response -> getBody() -> getContents());
 							$dir_path = "./helper/files/androidapksfree";
-							break;
-						case $urls[2]:
-							//fix_download($dir_path);
 							break;
 					}
 					
