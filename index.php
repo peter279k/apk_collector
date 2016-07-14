@@ -116,12 +116,6 @@
 						parse_apkmirror_html($url, $response -> getBody() -> getContents());
 						break;
 					case $urls[1]:
-						games_apk_html($url, $response -> getBody() -> getContents());
-						break;
-					case $urls[2]:
-						androidapps_game_html($url, $response -> getBody() -> getContents());
-						break;
-					case $urls[3]:
 						androidapks_free_html($url, $response -> getBody() -> getContents());
 						break;
 				}
