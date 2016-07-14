@@ -19,7 +19,7 @@
 	
 	class download_command extends Command {
 		private $urls = array(
-			'http://www.apkmirror.com', 'http://www.androidapksfree.com/'
+			'http://www.apkmirror.com', 'http://www.androidapksfree.com/', 'fixing error when downloading apk'
 		);
 		
 		protected function configure() {
@@ -69,14 +69,6 @@
 							$dir_path = "./helper/files/apkmirror";
 							break;
 						case $urls[1]:
-							$pages = games_apk_pages($response -> getBody() -> getContents());
-							$dir_path = "./helper/files/gamesapk";
-							break;
-						case $urls[2]:
-							$pages = androidapps_game_pages($response -> getBody() -> getContents());
-							$dir_path = "./helper/files/androidappsgame";
-							break;
-						case $urls[3]:
 							$pages = androidapks_free_pages($response -> getBody() -> getContents());
 							$dir_path = "./helper/files/androidapksfree";
 							break;
