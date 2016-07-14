@@ -369,6 +369,10 @@
 			initial_bar();
 			
 			try {
+				
+				//replace .nope with empty
+				$link = str_replace(".nope", "", $link);
+				
 				$response = $client -> request('GET', $link, ["verify" => false, "sink" => $resource, 'progress' => 
 					function ($download_size, $downloaded_size, $upload_size, $uploaded_size) {
 						// present the progress string
