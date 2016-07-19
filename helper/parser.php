@@ -309,14 +309,7 @@
 
 			$download_link = $crawler -> filter('a') -> attr('href');
 			
-			if(strpos($download_link, ".apk")) {
-				if(strpos($download_link, "/cdn-cgi/l/email-protection")) {
-					$download_link = rawurldecode($download_link);
-					$link_arr = explode("&", $download_link);
-					$download_link = $link_arr[count($link_arr) - 1];
-					$download_link = str_replace("body=", "", $download_link);
-				}	
-				
+			if(strpos($download_link, ".apk") && !strpos($download_link, "/cdn-cgi/l/email-protection")) {
 				download_androidapks_file($download_link);
 			}
 		}
