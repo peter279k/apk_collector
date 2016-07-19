@@ -307,7 +307,7 @@
 		foreach($download_link_arr as $key => $value) {
 			$crawler = new Crawler($value);
 
-			$download_link = $crawler -> filter('a') -> attr('href') . "\n";
+			$download_link = $crawler -> filter('a') -> attr('href');
 			
 			if(strpos($download_link, ".apk")) {
 				if(strpos($download_link, "/cdn-cgi/l/email-protection")) {
