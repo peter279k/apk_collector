@@ -51,6 +51,18 @@
 			}
 			
 			foreach($apks as $value) {
+				$url = rawurldecode($value);
+				
+				$url_arr = explode("&body=", $url);
+				$url_len = count($url_arr);
+				
+				if($url_len != 0) {
+					$url = $url_arr[$url_len - 1];
+					$value = $url;
+				}
+				
+				$value = str_replace(".nope", "", $value);
+				
 				request_download_link($path, $file_path, $value);
 			}
 			
