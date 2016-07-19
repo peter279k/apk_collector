@@ -4,6 +4,7 @@
 	require "vendor/autoload.php";
 	require "helper/greet.php";
 	require "helper/parser.php";
+	require "helper/fix_download.php";
 
 	use GuzzleHttp\Client;
 	use Psr\Http\Message\ResponseInterface;
@@ -48,10 +49,8 @@
 				
 				if($url != "fixing error when downloading apk")
 					echo $this -> request_initial($url, $output);
-				/*
 				else
 					fix_download_apk();
-				*/
 			}
 		}
 		
