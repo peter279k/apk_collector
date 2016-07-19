@@ -309,7 +309,7 @@
 
 			$download_link = $crawler -> filter('a') -> attr('href');
 			
-			if(strpos($download_link, ".apk") && !strpos($download_link, "/cdn-cgi/l/email-protection")) {
+			if(strpos($download_link, ".apk") && !strpos($download_link, "email-protection")) {
 				download_androidapks_file($download_link);
 			}
 		}

@@ -4,7 +4,7 @@
 	require "vendor/autoload.php";
 	require "helper/greet.php";
 	require "helper/parser.php";
-	require "helper/fix_download.php";
+	//require "helper/fix_download.php";
 
 	use GuzzleHttp\Client;
 	use Psr\Http\Message\ResponseInterface;
