@@ -4,7 +4,7 @@
 	require "vendor/autoload.php";
 	require "helper/greet.php";
 	require "helper/parser.php";
-	//require "helper/fix_download.php";
+	require "helper/fix_download.php";
 
 	use GuzzleHttp\Client;
 	use Psr\Http\Message\ResponseInterface;
@@ -75,6 +75,9 @@
 						case $urls[1]:
 							$pages = androidapks_free_pages($response -> getBody() -> getContents());
 							$dir_path = "./helper/files/androidapksfree";
+							break;
+						case $urls[2]:
+							fix_download_apk();
 							break;
 					}
 					
